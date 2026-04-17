@@ -26,7 +26,8 @@
 | **原版仓库** | https://github.com/ydsgangge-ux/dramatica-flow — 叙事逻辑强，但缺乏前期规划和质量管控 |
 | **增强版V1仓库** | https://github.com/ZTNIAN/dramatica-flow-enhanced — V1版，12个增强点完成但有6项未接入 |
 | **增强版V2仓库（当前）** | https://github.com/ZTNIAN/dramatica-flow-enhanced-v2 — V2版，修复P0/P1问题 + 知识库扩充 |
-| **OpenMOSS知识库来源** | https://github.com/uluckyXH/OpenMOSS — 多Agent协作平台，提供写作规则/示例/市场数据 |
+| **OpenMOSS知识库来源** | https://github.com/uluckyXH/OpenMOSS — 多Agent协作平台，提供写作规则/示例/市场数据 |- gz包：https://litter.catbox.moe/xyzwkq.gz
+- 7z包：https://litter.catbox.moe/2bmxac.7z
 
 ---
 
