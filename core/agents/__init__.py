@@ -39,14 +39,6 @@ def _load_kb(name: str) -> str:
 _KB_ANTI_AI = _load_kb("anti_ai_rules.md")
 _KB_BEFORE_AFTER = _load_kb("before_after_examples.md")
 _KB_WRITING_TECHNIQUES = _load_kb("writing_techniques.md")
-# V3 新增：OpenMOSS 全量知识库
-_KB_COMMON_MISTAKES = _load_kb("rules/common-mistakes.md")
-_KB_FIVE_SENSES = _load_kb("references/writing-techniques/five-senses-description.md")
-_KB_SHOW_DONT_TELL = _load_kb("references/writing-techniques/show-dont-tell.md")
-_KB_WRITER_SKILLS = _load_kb("agent-specific/writer-skills.md")
-_KB_REVIEWER_CHECKLIST = _load_kb("agent-specific/reviewer-checklist.md")
-_KB_REVIEW_CRITERIA_95 = _load_kb("rules/review-criteria-95.md")
-_KB_REDLINES = _load_kb("rules/redlines.md")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -177,12 +169,6 @@ class ArchitectAgent:
 
 ## 写作技巧参考（建筑师需在蓝图中规划对应手法）
 {_KB_WRITING_TECHNIQUES[:3000] if _KB_WRITING_TECHNIQUES else "（无）"}
-
-## 五感描写指南（建筑师需在蓝图中标注每场景的感官配比）
-{_KB_FIVE_SENSES[:2000] if _KB_FIVE_SENSES else "（无）"}
-
-## 常见错误及避免方法（建筑师需在 risk_scan 中预判本章可能出现的错误）
-{_KB_COMMON_MISTAKES[:2000] if _KB_COMMON_MISTAKES else "（无）"}
 
 ## 去AI味红线（建筑师需在节奏建议中规避以下问题）
 {_KB_ANTI_AI[:2000] if _KB_ANTI_AI else "（无）"}
@@ -365,14 +351,6 @@ class WriterAgent:
         # 注入对比示例库（P0：帮助写手理解"好vs坏"的差距）
         if _KB_BEFORE_AFTER:
             system += "\n\n## 修改前后对比示例（写完后自查，确保不像「修改前」）\n" + _KB_BEFORE_AFTER[:4000]
-
-        # V3 新增：注入写手专属技能库（开篇钩子/五感模板/人物出场/对话技巧/节奏控制/章末钩子）
-        if _KB_WRITER_SKILLS:
-            system += "\n\n## 写手专属技能库（参考应用）\n" + _KB_WRITER_SKILLS[:4000]
-
-        # V3 新增：注入 Show Don't Tell 详解
-        if _KB_SHOW_DONT_TELL:
-            system += "\n\n## Show Don't Tell 转换表（写完后自查，确保没有直接说\"感到XX\"）\n" + _KB_SHOW_DONT_TELL[:3000]
 
         prior_ctx = ""
         if prior_summaries.strip():
@@ -700,10 +678,6 @@ class AuditorAgent:
 
 ## 17条红线（一票否决，任一触发则 passed=false）
 {redline_str}
-{_KB_REDLINES[:2000] if _KB_REDLINES else ""}
-
-## 审查者详细检查清单（V3新增，逐条核对）
-{_KB_REVIEWER_CHECKLIST[:3000] if _KB_REVIEWER_CHECKLIST else ""}
 
 ## 输出格式（严格 JSON）
 {{

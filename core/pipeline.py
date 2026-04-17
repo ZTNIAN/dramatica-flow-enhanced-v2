@@ -414,34 +414,18 @@ class WritingPipeline:
             except Exception as e:
                 log(f"仪表盘保存失败（不阻塞）：{e}")
 
-        # ── 13. 更新动态规划器进度（V3 增强）─────────────────────────────────────
+        # ── 13. 更新动态规划器进度（新增） ─────────────────────────────────────
         if self.dynamic_planner:
             log("更新动态规划器...")
             try:
                 self.dynamic_planner.update_progress(ch)
-
-                # V3 新增：记录审计结果，用于动态调整张力曲线
-                from .dynamic_planner import ChapterAuditRecord
-                audit_record = ChapterAuditRecord(
-                    chapter=ch,
-                    weighted_total=audit_report.weighted_total,
-                    dimension_scores=audit_report.dimension_scores,
-                    redline_violations=audit_report.redline_violations,
-                    revision_rounds=revision_rounds,
-                )
-                self.dynamic_planner.record_chapter_audit(audit_record)
-
-                # V3 新增：根据审计分数动态调整后续张力曲线
-                self.dynamic_planner.adjust_tension_based_on_audit(ch)
-
                 # 检查是否需要调整战役规划
                 campaign = self.dynamic_planner.get_current_campaign(ch)
                 if campaign:
+                    # 如果审计分数持续低于90，提示可能需要调整张力曲线
                     if audit_report.weighted_total > 0 and audit_report.weighted_total < 90:
                         log(f"  注意：本章加权分 {audit_report.weighted_total} < 90，"
-                            f"战役「{campaign.name}」已自动调整后续张力曲线")
-                    if audit_report.redline_violations:
-                        log(f"  ⚠ 红线触发：{audit_report.redline_violations}，后续5章张力已下调")
+                            f"战役「{campaign.name}」可能需要调整")
                     # 保存规划器状态
                     planner_path = self.sm.book_dir / "dynamic_planner.json"
                     self.dynamic_planner.save(planner_path)
